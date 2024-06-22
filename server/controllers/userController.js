@@ -46,6 +46,31 @@ export const registerUser = async (req, res, next) => {
     }
 }
 
+// @desc Login user
+// @route POST /api/users/login
+
+export const loginUser = async (req, res, next) => {
+    const { email, password } = req.body 
+
+    if (!email || !password) {
+        res.status(400).json({ message: "Please add required fields"})
+        return
+    }
+
+    const user = await User.findOne({ email })
+    if (user && await bcrypt.compare(password, user.password)) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateJwtToken(user._id),
+            role: user.role
+        })
+    } else {
+        res.status(400).json({ message: "Invalid Credentials "})
+    }
+}
+
 const generateJwtToken = (id) => {
     return jwt.sign(
         {id},
