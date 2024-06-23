@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/users.js"
+import productRoutes from "./routes/products.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ mongoose.connection.on('connected', () => {
 })
 
 app.use("/api/users", userRoutes)
+app.use("/api/products", productRoutes);
 
 const PORT = 8000
 
