@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { uploadBytes, ref } from 'firebase/storage'
+import { storage } from '../../filebase'
 
 export const Products = () => {
 
@@ -22,6 +24,44 @@ export const Products = () => {
 
         console.log("Submit Data")
         console.log(formData)  
+
+        if (formData.images) {
+            let fileRef = ref(storage, "123") // ref(storage, formData.images[0].name)
+            await uploadBytes(fileRef, formData.images[0]).then(async (snapshot) => {
+                console.log("Uploaded a blob or file!")
+                console.log(snapshot)
+            })
+
+            console.log("After sending file")
+        }
+
+        // const data = new FormData();
+        // data.append('name', formData.name)
+        // data.append('price', formData.price)
+        // data.append('category', formData.category)
+        // data.append('color', formData.color)
+        // data.append('size', formData.size)
+        // data.append('images', formData.images)
+
+        // let url = `http://localhost:8000/api/products`
+        // try {
+        //     let res = await fetch(url, {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "multipart/form-data"
+        //         },
+        //         body: data,
+        //     })
+
+        //     if (res) {
+        //         console.log("Successfully create a product")
+        //     } else {
+        //         console.log("Failed to create the product")
+        //     }
+        // } catch (e) {
+        //     console.log(e)
+        // }
+
     }
     return (
         <div className="bg-red-200 h-20 w-11/12 md:w-2/4 mx-auto" >
