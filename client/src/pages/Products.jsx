@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { uploadBytes, ref } from 'firebase/storage'
 import { storage } from '../../filebase'
+import { v4 as uuidv4} from 'uuid';
 
 export const Products = () => {
 
@@ -25,42 +26,40 @@ export const Products = () => {
         console.log("Submit Data")
         console.log(formData)  
 
-        if (formData.images) {
-            let fileRef = ref(storage, "123") // ref(storage, formData.images[0].name)
-            await uploadBytes(fileRef, formData.images[0]).then(async (snapshot) => {
-                console.log("Uploaded a blob or file!")
-                console.log(snapshot)
-            })
+        let imageUrls = [];
 
-            console.log("After sending file")
+        if (formData.images) {
+            for (let image of formData.images) {
+                let fileRef = ref(storage, uuidv4()) // ref(storage, formData.images[0].name)
+                await uploadBytes(fileRef, image).then((snapshot) => {
+                    console.log("Uploaded a blob or file!")
+                    let url = `https://firebasestorage.googleapis.com/v0/b/${snapshot.ref._location.bucket}/o/${snapshot.ref._location.path}?alt=media`
+                    imageUrls.push(url);
+                    console.log(snapshot)
+                })
+            }
+            console.log("After sending files")
+            console.log(imageUrls)
         }
 
-        // const data = new FormData();
-        // data.append('name', formData.name)
-        // data.append('price', formData.price)
-        // data.append('category', formData.category)
-        // data.append('color', formData.color)
-        // data.append('size', formData.size)
-        // data.append('images', formData.images)
+        let url = `http://localhost:8000/api/products`
+        try {
+            let res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({...formData, images: imageUrls}),
+            })
 
-        // let url = `http://localhost:8000/api/products`
-        // try {
-        //     let res = await fetch(url, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "multipart/form-data"
-        //         },
-        //         body: data,
-        //     })
-
-        //     if (res) {
-        //         console.log("Successfully create a product")
-        //     } else {
-        //         console.log("Failed to create the product")
-        //     }
-        // } catch (e) {
-        //     console.log(e)
-        // }
+            if (res) {
+                console.log("Successfully create a product")
+            } else {
+                console.log("Failed to create the product")
+            }
+        } catch (e) {
+            console.log(e)
+        }
 
     }
     return (
