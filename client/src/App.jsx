@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import { AddProduct } from './pages/AddProduct'
+import { Route, Routes } from 'react-router-dom'
 import { Products } from './pages/Products'
 
 function App() {
@@ -7,8 +9,10 @@ function App() {
 
   return (
     <>
-      <h2>Hello There</h2>
-      <Products/>
+      <Routes>
+        <Route path="/" element={<Products/>}/>
+        <Route path="/addProduct" element={<AddProduct/>}/>
+      </Routes>
     </>
   )
 }
