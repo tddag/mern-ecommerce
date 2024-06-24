@@ -27,3 +27,15 @@ export const addProduct = async (req, res, next) => {
         res.status(400).json({ message: "Invalid Request"});
     }
 }
+
+// @desc Get products
+// @route GET /api/products
+export const getProducts = async (req, res, next) => {
+    const products = await Product.find();
+
+    if (products) {
+        res.status(200).json(products)
+    } else {
+        res.status(200).json([]);
+    }
+}

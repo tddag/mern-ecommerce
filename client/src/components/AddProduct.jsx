@@ -63,7 +63,7 @@ export const AddProduct = () => {
 
     }
     return (
-        <div className="bg-red-200 h-20 w-11/12 md:w-2/4 mx-auto mt-10" >
+        <div className="w-11/12 md:w-2/4 mx-auto mt-10" >
             <form onSubmit={handleFormSubmit} className="p-4 shadow-md rounded-md bg-blue-200">
                 <div className="flex items-center p-4">
                     <label htmlFor="name" className="text-grey-700 font-bold mr-10">Name:  </label>                        

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-import { AddProduct } from './pages/AddProduct'
 import { Route, Routes } from 'react-router-dom'
 import { Products } from './pages/Products'
+import { ManageProducts } from './pages/ManageProducts'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,7 +11,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Products/>}/>
-        <Route path="/addProduct" element={<AddProduct/>}/>
+        <Route path="/manageProducts" element={<ManageProducts/>}/>
       </Routes>
     </>
   )
