@@ -3,7 +3,7 @@ import React from 'react'
 export const ProductItemUser = (props) => {
   return (
     <div>
-        <div className="w-60 h-60 bg-blue-300 p-4 flex flex-col relative">
+        <div className="w-60 h-60 bg-blue-300 p-4 flex flex-col relative border-box">
             <div>{props.product.name}</div>
             {props.product.images && (
                 <div>
