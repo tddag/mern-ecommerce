@@ -1,6 +1,6 @@
 import React from 'react'
 import { AddProduct } from '../components/AddProduct'
-import ProductList from '../components/ProductList'
+import ProductListAdmin from '../components/ProductListAdmin'
 
 
 
@@ -8,7 +8,7 @@ export const ManageProducts = () => {
   return (
     <div className="flex flex-col">
         <AddProduct/>
-        <ProductList/>
+        <ProductListAdmin/>
     </div>
   )
 }

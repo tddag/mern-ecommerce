@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const ProductList = () => {
+const ProductListAdmin = () => {
 
     const [productList, setProductList] = useState([])
 
@@ -29,13 +29,15 @@ const ProductList = () => {
         <div className="bg-green-100 w-11/12 md:w-3/4 m-auto mt-20 p-4">
             
             {productList.length > 0 ? (
-                <div>
+                <div className="flex flex-col gap-6 ">
                     {productList.map((product, id) => (
-                        <div key={id}> 
+                        <div key={id} className="flex items-center"> 
                             {product.name + " | " + product.price + " | " + product.size}
-                            {product.images.map((image, imgIdx) => (
-                                <img src={image} key={imgIdx} className="h-60 inline-block"/>
-                            ))}
+                            <div className="ml-10">
+                                {product.images.map((image, imgIdx) => (
+                                    <img src={image} key={imgIdx} className="h-20 inline-block"/>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -46,4 +48,4 @@ const ProductList = () => {
     )
 }
 
-export default ProductList
+export default ProductListAdmin
