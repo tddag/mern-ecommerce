@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ProductLlistUser } from '../components/ProductLlistUser'
-import { Select } from 'antd';
+import { Filter } from '../components/Filter';
 
 export const Home = () => {
 
@@ -11,26 +11,18 @@ export const Home = () => {
         size: null,
         color: null
     })
-    const [categoryList, setCategoryList] = useState([])
-    const [sizeList, setSizeList] = useState([])
-    const [colorList, setColorList] = useState([])
 
     useEffect(() => {
         getProductList();
     }, [])
 
-    useEffect(() => {
-        console.log("Product List Changed")
 
-        populateCategoryList()
-        populateSizeList()
-        populateColorList()
-    }, [productList])
 
     useEffect(() => {
         console.log("Filtered Changed")
 
         if (isFilterReset()) {
+            if (productList.length > 0) setFilteredProductList(productList)
             return
         }
  
@@ -124,59 +116,6 @@ export const Home = () => {
         }
     }
 
-    const populateCategoryList = () => {
-        if (!productList) return 
-        let list = productList.map(product => product.category)
-        let set = new Set(list);
-        list = Array.from(set);
-        list = list.map(category => ({
-            value: category.toLowerCase(),
-            label: category.charAt(0).toUpperCase() + category.toLowerCase().slice(1)
-        }))
-        setCategoryList(list);
-    }
-
-    const populateSizeList = () => {
-        if (!productList) return 
-        let list = productList.map(product => product.size)
-        let set = new Set(list);
-        list = Array.from(set);
-        list = list.map(size => ({
-            value: size.toLowerCase(),
-            label: size.charAt(0).toUpperCase() + size.toLowerCase().slice(1)
-        }))
-        setSizeList(list);
-    }    
-
-    const populateColorList = () => {
-        if (!productList) return 
-        let list = productList.map(product => product.color)
-        let set = new Set(list);
-        list = Array.from(set);
-        list = list.map(color => ({
-            value: color.toLowerCase(),
-            label: color.charAt(0).toUpperCase() + color.toLowerCase().slice(1)
-        }))
-        setColorList(list);
-    }       
-
-    const handleFilterChange = (filterField, value) => {
-        switch(filterField) {
-            case "category": 
-                setFilter(f => ({...f, category: value}))
-                break;
-            case "size": 
-                setFilter(f => ({...f, size: value}))
-                break;      
-            case "color": 
-                setFilter(f => ({...f, color: value}))
-                break;     
-            default:                       
-        }
-    }
-
-
-
     return (
         <div className="flex flex-col bg-blue-200">
             <div className="flex justify-between p-2 items-center">
@@ -189,35 +128,7 @@ export const Home = () => {
             </div>
             <div className="bg-red-200 h-full flex w-full">
                 <div className="h-full bg-yellow-200 w-1/3 md:w-1/6 flex flex-col p-4 gap-4">
-                    <div className="bg-pink-100 p-4 flex flex-col gap-2">
-                        Category
-                        <Select
-                            className="w-20"
-                            options={categoryList}
-                            onChange={(value) => handleFilterChange('category', value)}
-                        />
-                    </div>
-
-                    <div className="bg-pink-100 p-4 flex flex-col gap-2">
-                        Size
-                        <Select
-                            className="w-20"
-                            options={sizeList}
-                            onChange={(value) => handleFilterChange('size', value)}
-
-                        />                        
-                    </div>
-
-                    <div className="bg-pink-100 p-4 flex flex-col gap-2">
-                        Color
-                        <Select
-                            className="w-20"
-                            options={colorList}
-                            onChange={(value) => handleFilterChange('color', value)}
-
-                        />                               
-                    </div>                    
-                    
+                    <Filter productList={productList} setFilter={setFilter}/>                      
                 </div>
                 <div className="flex pt-10 pl-5">
                     <ProductLlistUser productList={filteredProductList}/>
