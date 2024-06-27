@@ -33,7 +33,7 @@ const ProductListAdmin = () => {
                     {productList.map((product, id) => (
                         <div key={id} className="flex items-center"> 
                             {product.name + " | " + product.price + " | " + product.size}
-                            <div className="ml-10">
+                            <div className="flex gap-4 ml-10">
                                 {product.images.map((image, imgIdx) => (
                                     <img src={image} key={imgIdx} className="h-20 inline-block"/>
                                 ))}

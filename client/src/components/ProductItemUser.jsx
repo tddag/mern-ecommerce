@@ -1,12 +1,19 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const ProductItemUser = (props) => {
-  return (
+
+    const navigate = useNavigate();
+    const navigateToProduct = (id) => {
+        navigate(`/product/${id}`)
+    }
+
+    return (
     <div>
         <div className="w-60 h-60 bg-blue-300 p-4 flex flex-col relative border-box">
-            <div>{props.product.name}</div>
+            <div className="cursor-pointer" onClick={() => navigateToProduct(props.product._id)}>{props.product.name}</div>
             {props.product.images && (
-                <div>
+                <div className="cursor-pointer" onClick={() => navigateToProduct(props.product._id)}>
                     <img src={props.product.images[0]} className="w-20 h-20"/>
                 </div>
             )}
@@ -27,5 +34,5 @@ export const ProductItemUser = (props) => {
             </div>
         </div>        
     </div>
-  )
+    )
 }

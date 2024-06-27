@@ -39,3 +39,24 @@ export const getProducts = async (req, res, next) => {
         res.status(200).json([]);
     }
 }
+
+
+// @desc Get product
+// @route GET /api/products/id
+export const getProduct = async (req, res, next) => {
+    const { id } = req.params;
+
+    if (!id) {
+        res.status(400).json({ message: "Invalid Request"})
+        return
+    }
+
+    const product = await Product.findById(id)
+    if (product) {
+        res.status(200).json(product)
+    } else {
+        res.status(400).json({ message: "No product found!"})
+    }
+
+
+}
