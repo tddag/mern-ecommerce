@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ProductLlistUser } from '../components/ProductLlistUser'
 import { Filter } from '../components/Filter';
+import { NavBar } from '../components/NavBar';
 
 export const Home = () => {
 
@@ -127,14 +128,7 @@ export const Home = () => {
 
     return (
         <div className="flex flex-col bg-blue-200">
-            <div className="flex justify-between p-2 items-center">
-                <div>
-                    TD STORE
-                </div>
-                <div className="bg-green-300 p-2">
-                    Cart
-                </div>
-            </div>
+            <NavBar/>
             <div className="bg-red-200 h-full flex w-full">
                 <div className="h-full bg-yellow-200 w-1/3 md:w-1/6 flex flex-col p-4 gap-4">
                     <Filter productList={productList} setFilter={setFilter}/>                      

@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
+import { addToCart } from '../state/cart/cartSlice';
+import { InputNumber } from 'antd';
 
 export const ProductItemUser = (props) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [qty, setQty] = useState(1);
+
     const navigateToProduct = (id) => {
         navigate(`/product/${id}`)
+    }
+
+    const handleAddAction = () => {
+        let cartProduct = {...props.product};
+        cartProduct.qty = qty;
+        dispatch(addToCart(cartProduct))
     }
 
     return (
@@ -23,12 +35,15 @@ export const ProductItemUser = (props) => {
                     {props.product.category}
                 </div>
             )}
+
+            <InputNumber prefix="qty: " min={1} defaultValue={1} value={qty} onChange={(val) => setQty(val)}/>
+
             
             <div className="flex p-4 w-full box-border justify-between absolute bottom-0 pb-5 right-0 items-center">
                 <div>
                     ${props.product.price}
                 </div>
-                <div className="bg-purple-200 p-2">
+                <div className="bg-purple-200 p-2 rounded-lg" onClick={handleAddAction}>
                     <button>Add</button>
                 </div>
             </div>

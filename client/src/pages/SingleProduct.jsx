@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
+import { InputNumber } from "antd";
+import { addToCart } from '../state/cart/cartSlice';
+import { NavBar } from '../components/NavBar';
 
 export const SingleProduct = () => {
 
     const { id } = useParams();
     const [product, setProduct] = useState({})
+    const [qty, setQty] = useState(1);
+
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -29,32 +36,11 @@ export const SingleProduct = () => {
         }
     }
 
-    // const product = {
-    //     "_id": "6678e3241e21d9b17c584f5e",
-    //     "name": "New product 1",
-    //     "price": 100,
-    //     "category": "shirt",
-    //     "color": "black",
-    //     "size": "M",
-    //     "images": [
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/0b51f07a-5dd3-40c8-86d5-ea9fa4187525?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/4070658b-85a6-4a40-9803-8c0696da6f83?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/af891257-57b9-4a53-a8c6-7dbadf0ff346?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/0b51f07a-5dd3-40c8-86d5-ea9fa4187525?alt=media",
-    //         "https://firebasestorage.googleapis.com/v0/b/mern-ecommerce-6169d.appspot.com/o/0b51f07a-5dd3-40c8-86d5-ea9fa4187525?alt=media",
-
-
-    //     ],
-    //     "createdAt": "2024-06-24T03:08:20.386Z",
-    //     "updatedAt": "2024-06-24T03:08:20.386Z",
-    //     "__v": 0    
-    // }
+    const handleAddAction = () => {
+        let cartProduct = {...product};
+        cartProduct.qty = qty;
+        dispatch(addToCart(cartProduct))
+    }
 
     const relatedProducts = [
         {
@@ -122,10 +108,8 @@ export const SingleProduct = () => {
 
     return (
         <div className="flex flex-col">
-            <div className="bg-red-200 flex justify-between p-2 pr-4">
-                <span className="cursor-pointer" onClick={() => navigate('/')}>TD Store</span>
-                <button className="bg-green-300 p-2 rounded-lg">Cart</button>
-            </div>
+            <NavBar/>
+
             <div className="bg-blue-200 h-full flex flex-col md:flex-row">
                 <div className="bg-purple-200 h-full w-full md:w-1/2 flex flex-col" >
                     <div className="bg-blue-200 h-60 w-60 m-auto mt-5">
@@ -145,12 +129,13 @@ export const SingleProduct = () => {
 
                 </div>
 
-                <div className="bg-orange-200 h-full w-full md:w-1/2 p-10">
+                <div className="bg-orange-200 h-full w-full md:w-1/2 p-10 flex flex-col">
                     <h2>{product.name}</h2>
                     <h2>${product.price}</h2>
                     <h2>{product.size}</h2>
                     <h2>{product.color}</h2>
-                    <button className="bg-blue-200 p-2 rounded-lg mt-20">Add to Cart</button>
+                    <InputNumber prefix="qty: " min={1} defaultValue={1} value={qty} onChange={(val) => setQty(val)}/>
+                    <button className="bg-blue-200 p-2 rounded-lg mt-20" onClick={handleAddAction}>Add to Cart</button>
                 </div>
             </div>
             <div className="bg-green-200 h-60 flex flex-col">
