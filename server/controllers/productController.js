@@ -31,13 +31,20 @@ export const addProduct = async (req, res, next) => {
 // @desc Get products
 // @route GET /api/products
 export const getProducts = async (req, res, next) => {
-    const products = await Product.find();
 
-    if (products) {
-        res.status(200).json(products)
-    } else {
-        res.status(200).json([]);
+    try {
+        const products = await Product.find();
+
+        if (products) {
+            res.status(200).json(products)
+        } else {
+            res.status(200).json([]);
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).json({ message: e})
     }
+
 }
 
 
