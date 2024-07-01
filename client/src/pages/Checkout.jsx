@@ -16,6 +16,33 @@ export const Checkout = () => {
         return sum
     }
 
+    const handleMakePayment = async () => {
+        try {
+            let url = `http://localhost:8000/api/products/checkout`
+
+            let res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({products: cart}),
+            })
+
+            console.log("TD res: ")
+            console.log(res)
+
+            if (res.ok) {
+                res = await res.json();
+                window.location.href = res.url
+            } else {
+                throw new Error("Network response is not ok")
+            }
+        } catch (e) {
+            console.log(e);
+
+        }
+    }
+
     return (
         <div className="flex flex-col">
             <div>
@@ -66,7 +93,12 @@ export const Checkout = () => {
 
                 <div className="bg-green-200 w-1/2 h-screen">
                     <div className="flex flex-col p-4">
-                        <button className={"p-2 rounded-lg bg-orange-300 w-full md:w-1/2 mb-5"} disabled={getTotal() == 0}>Place your order</button>
+                        <button className={"p-2 rounded-lg bg-orange-300 w-full md:w-1/2 mb-5"} disabled={getTotal() == 0} onClick={handleMakePayment}>Make Payment</button>
+                        {/* <form action="/api/products/checkout" method="POST">
+                            <button type="submit">
+                                Checkout
+                            </button>
+                        </form> */}
                         <div className="font-bold">Order Summary</div>
                         <div>Items: ${getTotal()}</div>
                         <div>Tax: ${getTotal()*0.13}</div>
