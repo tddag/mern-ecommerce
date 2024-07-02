@@ -9,7 +9,7 @@ const ProductListAdmin = () => {
     }, [])
 
     const getProductList = async () => {
-        let url = `http://localhost:8000/api/products`
+        let url = `${import.meta.env.VITE_BACKEND_URL}/api/products`
 
         try {
             let res = await fetch(url)

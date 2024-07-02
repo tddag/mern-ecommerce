@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavBar } from '../components/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeProductFromCart } from '../state/cart/cartSlice'
@@ -7,6 +7,22 @@ export const Checkout = () => {
 
     const cart = useSelector(state => state.cart.products)
     const dispatch = useDispatch();
+
+    const [message, setMessage] = useState("")
+
+    useEffect(() => {
+
+        let query = new URLSearchParams(window.location.search)
+
+        if (query.get("success")) {
+            setMessage("Order placed! You will receive an email confirmation")
+        }
+
+        if (query.get("canceled")) {
+            setMessage("Order canceled! Continue shopping and check out when you are ready")
+        }        
+
+    }, [])
 
     const getTotal = () => {
         let sum = 0;
@@ -18,7 +34,7 @@ export const Checkout = () => {
 
     const handleMakePayment = async () => {
         try {
-            let url = `http://localhost:8000/api/products/checkout`
+            let url = `${import.meta.env.VITE_BACKEND_URL}/api/products/checkout`
 
             let res = await fetch(url, {
                 method: 'POST',
@@ -27,9 +43,6 @@ export const Checkout = () => {
                 },
                 body: JSON.stringify({products: cart}),
             })
-
-            console.log("TD res: ")
-            console.log(res)
 
             if (res.ok) {
                 res = await res.json();
@@ -49,7 +62,12 @@ export const Checkout = () => {
                 <NavBar/>
             </div>
 
-            <div className="flex">
+            {message ? (
+                <div className="m-auto mt-10 font-bold"> 
+                    {message}
+                </div>
+            ) : (
+                <div className="flex">
                 <div className="bg-blue-200 w-1/2 h-screen">
                     {cart.length > 0 && (
                         <div className="p-6 w-full h-full box-border flex flex-col gap-4 overflow-auto">
@@ -106,6 +124,9 @@ export const Checkout = () => {
                     </div>
                 </div>
             </div>
+            )}
+
+
             
         </div>
     )

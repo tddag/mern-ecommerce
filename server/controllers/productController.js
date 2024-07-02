@@ -1,6 +1,6 @@
 import Product from "../models/Product.js";
 import stripeLib from "stripe"
-const stripe = stripeLib("sk_test_51PXZnPLdRXO21zGPcxfbmYs5g31JGPsdGVYlFNvlhfRJve4R4s95eCmVFz4TuvbbWx0w8vATSB6Rw4mqHoWn2FYe00NyoD11qV")
+const stripe = stripeLib(process.env.STRIPE_SECRET_KEY)
 
 // @desc Add new product
 // @route POST /api/products
@@ -78,7 +78,7 @@ export const checkoutProducts = async (req, res, next) => {
         return
     }
 
-    const FRONT_END_URL = "http://localhost:5173/checkout"
+    const FRONT_END_URL = `${process.env.FRONT_END_URL}/checkout`
 
     let stripeProductPayload = products.map(product => ({
         price_data: {

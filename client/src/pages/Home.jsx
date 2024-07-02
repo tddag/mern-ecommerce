@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ProductLlistUser } from '../components/ProductLlistUser'
+import { ProductListUser } from '../components/ProductListUser'
 import { Filter } from '../components/Filter';
 import { NavBar } from '../components/NavBar';
 
@@ -44,7 +44,7 @@ export const Home = () => {
     }
 
     const getProductList = async () => {
-        let url = `http://localhost:8000/api/products`
+        let url = `${import.meta.env.VITE_BACKEND_URL}/api/products`
 
         try {
             // let list = [
@@ -134,7 +134,7 @@ export const Home = () => {
                     <Filter productList={productList} setFilter={setFilter}/>                      
                 </div>
                 <div className="flex pt-10 pl-5">
-                    <ProductLlistUser productList={filteredProductList}/>
+                    <ProductListUser productList={filteredProductList}/>
                 </div>
             </div>
 

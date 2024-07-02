@@ -21,7 +21,7 @@ export const SingleProduct = () => {
 
     const getProductDetails = async () => {
         try {
-            let url = `http://localhost:8000/api/products/${id}`
+            let url = `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`
 
             let res = await fetch(url)
             if (res.ok) {

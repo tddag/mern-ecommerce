@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ProductItemUser } from './ProductItemUser'
 
-export const ProductLlistUser = (props) => {
+export const ProductListUser = (props) => {
 
     return (
         <div className="h-screen overflow-auto">
