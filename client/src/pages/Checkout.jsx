@@ -2,24 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { NavBar } from '../components/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeProductFromCart } from '../state/cart/cartSlice'
+import { Result, Button, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
 
 export const Checkout = () => {
 
     const cart = useSelector(state => state.cart.products)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [messageApi, contextHolder ] = message.useMessage();
 
-    const [message, setMessage] = useState("")
+    const [checkoutMessage, setCheckoutMessage] = useState("")
+    const [isSuccessfullyCheckOut, setIsSuccessfullyCheckOut] = useState(false)
 
     useEffect(() => {
 
         let query = new URLSearchParams(window.location.search)
 
         if (query.get("success")) {
-            setMessage("Order placed! You will receive an email confirmation")
+            setCheckoutMessage("Order placed! You will receive an email confirmation")
+            setIsSuccessfullyCheckOut(true)
         }
 
         if (query.get("canceled")) {
-            setMessage("Order canceled! Continue shopping and check out when you are ready")
+            setCheckoutMessage("Order canceled! Continue shopping and check out when you are ready")
         }        
 
     }, [])
@@ -56,16 +63,34 @@ export const Checkout = () => {
         }
     }
 
+    const handleDeleteProduct = (product) => {
+        dispatch(removeProductFromCart(product._id))
+        messageApi.open({
+            type: "success",
+            content: `Successfully remove product ${product.name}`
+        })
+    }
+
     return (
         <div className="flex flex-col">
+            {contextHolder}
             <div>
                 <NavBar/>
             </div>
 
-            {message ? (
-                <div className="m-auto mt-10 font-bold"> 
-                    {message}
-                </div>
+            {checkoutMessage ? (
+                    
+                <Result
+                    status={isSuccessfullyCheckOut ? "success" : "error"}
+                    title={isSuccessfullyCheckOut ? "Successfully Ordered" : "Failed to Order"}
+                    subTitle={checkoutMessage}
+                    extra={[
+                        <Button type="primary" onClick={() => navigate("/")}>
+                            Shop Again
+                        </Button>
+                    ]}
+                />    
+  
             ) : (
                 <div className="flex">
                 <div className="bg-blue-200 w-1/2 h-screen">
@@ -101,7 +126,7 @@ export const Checkout = () => {
                                     </div>
                                    
                                     <div className="flex justify-end">
-                                        <button className="p-2 bg-red-200 rounded-lg" onClick={() => dispatch(removeProductFromCart(product._id))}>Delete</button>
+                                        <button className="p-2 bg-red-200 rounded-lg" onClick={() => handleDeleteProduct(product)}>Delete</button>
                                     </div>
                                 </div>
                             ))}
@@ -119,7 +144,7 @@ export const Checkout = () => {
                         </form> */}
                         <div className="font-bold">Order Summary</div>
                         <div>Items: ${getTotal()}</div>
-                        <div>Tax: ${getTotal()*0.13}</div>
+                        <div>Tax: ${(getTotal()*0.13).toFixed(2).toLocaleString("en-us")}</div>
                         <div className="text-red-600 font-bold">Order Total: ${(getTotal() * 1.13).toFixed(2).toLocaleString("en-us")}</div>
                     </div>
                 </div>

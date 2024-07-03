@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { addToCart } from '../state/cart/cartSlice';
-import { InputNumber } from 'antd';
+import { InputNumber, message } from 'antd';
 
 export const ProductItemUser = (props) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [qty, setQty] = useState(1);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const navigateToProduct = (id) => {
         navigate(`/product/${id}`)
@@ -18,10 +19,15 @@ export const ProductItemUser = (props) => {
         let cartProduct = {...props.product};
         cartProduct.qty = qty;
         dispatch(addToCart(cartProduct))
+        messageApi.open({
+            type: 'success',
+            content: `Successfully add to cart, product: ${props.product.name}, qty: ${qty}`
+        })
     }
 
     return (
     <div>
+        {contextHolder}
         <div className="w-60 h-60 bg-blue-300 p-4 flex flex-col relative border-box">
             <div className="cursor-pointer" onClick={() => navigateToProduct(props.product._id)}>{props.product.name}</div>
             {props.product.images && (

@@ -4,12 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { InputNumber } from "antd";
 import { addToCart } from '../state/cart/cartSlice';
 import { NavBar } from '../components/NavBar';
+import { message } from 'antd';
 
 export const SingleProduct = () => {
 
     const { id } = useParams();
     const [product, setProduct] = useState({})
     const [qty, setQty] = useState(1);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const dispatch = useDispatch();
 
@@ -40,6 +42,10 @@ export const SingleProduct = () => {
         let cartProduct = {...product};
         cartProduct.qty = qty;
         dispatch(addToCart(cartProduct))
+        messageApi.open({
+            type: 'success',
+            content: `Successfully add to cart, product: ${product.name}, qty: ${qty}`
+        })
     }
 
     const relatedProducts = [
@@ -108,6 +114,7 @@ export const SingleProduct = () => {
 
     return (
         <div className="flex flex-col">
+            {contextHolder}
             <NavBar/>
 
             <div className="bg-blue-200 h-full flex flex-col md:flex-row">
