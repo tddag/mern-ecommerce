@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { NavBar } from '../components/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeProductFromCart } from '../state/cart/cartSlice'
-import { Result, Button, message } from 'antd';
+import { removeProductFromCart, updateCartItem } from '../state/cart/cartSlice'
+import { Result, Button, message, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -106,10 +106,11 @@ export const Checkout = () => {
 
                                             <div>
                                                 ${product.price}
+
                                             </div>
 
-                                            <div>
-                                                Qty: {product.qty}
+                                            <div className="flex gap-2">
+                                                Qty: <InputNumber value={product.qty} min={1} max={10} onChange={(value) => dispatch(updateCartItem({_id: product._id, qty: value}))}/>
                                             </div> 
 
                                             <div>

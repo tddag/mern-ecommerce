@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { uploadBytes, ref } from 'firebase/storage'
 import { storage } from '../../filebase'
 import { v4 as uuidv4} from 'uuid';
+import { message } from 'antd';
 
-export const AddProduct = () => {
+export const AddProduct = (props) => {
 
     const [formData, setFormData] = useState({
         name: "New product 1",
@@ -14,8 +15,11 @@ export const AddProduct = () => {
         images: ""
     })
 
+    const [ messageApi, contextHolder] = message.useMessage();
+
     const handleFormDataChange = (e) => {
-        const { name, value, files } = e.target;
+        let { name, value, files } = e.target;
+        if (!value) value = "";
 
         setFormData(d => ({...d, [name]: files ? files : value}))
     }
@@ -54,6 +58,19 @@ export const AddProduct = () => {
 
             if (res) {
                 console.log("Successfully create a product")
+                messageApi.open({
+                    type: 'success',
+                    content: 'Successfully create the product'
+                })
+                setFormData({
+                    name: "New product 1",
+                    price: 100,
+                    category: "shirt",
+                    color: "black",
+                    size: "M",
+                    images: ""
+                });
+                props.getProductList();
             } else {
                 console.log("Failed to create the product")
             }
@@ -64,6 +81,7 @@ export const AddProduct = () => {
     }
     return (
         <div className="w-11/12 md:w-2/4 mx-auto mt-10" >
+            { contextHolder }
             <form onSubmit={handleFormSubmit} className="p-4 shadow-md rounded-md bg-blue-200">
                 <div className="flex items-center p-4">
                     <label htmlFor="name" className="text-grey-700 font-bold mr-10">Name:  </label>                        
