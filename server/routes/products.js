@@ -1,5 +1,5 @@
 import express from "express";
-import { addProduct, getProducts, getProduct, checkoutProducts } from "../controllers/productController.js";
+import { addProduct, getProducts, getProduct, checkoutProducts, updateProduct } from "../controllers/productController.js";
 const router = express.Router();
 
 
@@ -11,6 +11,9 @@ router.get('/', getProducts);
 
 // Get product
 router.get('/:id', getProduct)
+
+// Update product
+router.patch('/:id', updateProduct)
 
 // checkout products
 router.post('/checkout', checkoutProducts)

@@ -1,5 +1,8 @@
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import React, { useEffect, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { storage } from '../../filebase'
+import { uploadBytes, ref } from 'firebase/storage'
 
 const ProductListAdmin = (props) => {
 
@@ -7,6 +10,8 @@ const ProductListAdmin = (props) => {
 
     const [openModal, setOpenModal] = useState(false)
     const [selectedProduct, setSelectedProduct] = useState()
+
+    const [ messageApi, contextHolder ] = message.useMessage()
 
     const handleInitUpdate = (product) => {
         setSelectedProduct(product)
@@ -20,7 +25,7 @@ const ProductListAdmin = (props) => {
         console.log("files: ")
         console.log(files)
         if (name == 'images') {
-            setSelectedProduct(prod => ({...prod, newImageFiles: value}))
+            setSelectedProduct(prod => ({...prod, newImageFiles: files}))
         } else {
             setSelectedProduct(prod => ({...prod, [name]: value}))
         }
@@ -32,9 +37,58 @@ const ProductListAdmin = (props) => {
         setSelectedProduct(prod => ({...selectedProduct, images}))
     }
 
+    const handleUpdateProduct = async () => {
+        
+        try {
+            let newImageUrls = [];
+            if (selectedProduct.newImageFiles) {
+                for (let newImage of selectedProduct.newImageFiles) {
+                    let fileRef = ref(storage, uuidv4())
+    
+                    await uploadBytes(fileRef, newImage)
+                        .then((snapshot) => {
+                            let url = `https://firebasestorage.googleapis.com/v0/b/${snapshot.ref._location.bucket}/o/${snapshot.ref._location.path}?alt=media`
+                            newImageUrls.push(url);
+                        })
+                }
+            }
+    
+            let combinedImageUrls = selectedProduct.images || []
+            combinedImageUrls = combinedImageUrls.concat(newImageUrls);
+
+
+            let url = `${import.meta.env.VITE_BACKEND_URL}/api/products/${selectedProduct._id}`
+
+            let res = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({...selectedProduct, images: combinedImageUrls}),
+            })
+
+            if (res) {
+                console.log("Successfully update the product")
+                messageApi.open({
+                    type: 'success',
+                    content: 'Successfully update the product'
+                })
+                setOpenModal(false)
+                props.getProductList();
+            } else {
+                console.log("Failed to create the product")
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+        
+
+    }
+
     return (
         <div className="bg-green-100 w-11/12 md:w-3/4 m-auto mt-20 p-4">
-            
+            { contextHolder }
             {productList.length > 0 ? (
                 <div className="flex flex-col gap-6 ">
                     {productList.map((product, id) => (
@@ -67,7 +121,7 @@ const ProductListAdmin = (props) => {
                         </div>,
                         <div key="update" className="inline-block ml-3">
                             <button 
-                                className="bg-green-200 p-2 rounded-lg" >Update
+                                className="bg-green-200 p-2 rounded-lg" onClick={handleUpdateProduct} >Update
                             </button>
                         </div>
                 ]}
@@ -108,7 +162,7 @@ const ProductListAdmin = (props) => {
                                 {selectedProduct.images.map((image, idx) => 
                                     <div className="h-10 w-10 relative" key={idx}>
                                         <img src={image} alt="prodImg"/>
-                                        <span className="absolute -top-3 right-1 text-red-600" onClick={() => removeImage(image)}>x</span>
+                                        <span className="absolute -top-3 right-1 text-red-600 cursor-pointer" onClick={() => removeImage(image)}>x</span>
                                     </div>
                                 )}
                             </div>

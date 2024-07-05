@@ -11,7 +11,7 @@ export const ManageProducts = () => {
 
   useEffect(() => {
     getProductList()
-  })
+  }, [])
 
   const getProductList = async () => {
     let url = `${import.meta.env.VITE_BACKEND_URL}/api/products`
@@ -34,7 +34,7 @@ export const ManageProducts = () => {
     <div className="flex flex-col">
         <NavBar/>
         <AddProduct getProductList={getProductList}/>
-        <ProductListAdmin productList={productList}/>
+        <ProductListAdmin productList={productList} getProductList={getProductList}/>
     </div>
   )
 }

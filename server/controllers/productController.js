@@ -51,7 +51,7 @@ export const getProducts = async (req, res, next) => {
 
 
 // @desc Get product
-// @route GET /api/products/id
+// @route GET /api/products/:id
 export const getProduct = async (req, res, next) => {
     const { id } = req.params;
 
@@ -66,6 +66,31 @@ export const getProduct = async (req, res, next) => {
     } else {
         res.status(400).json({ message: "No product found!"})
     }
+}
+
+
+// @desc Update Product
+// @route PATCH /api/products/:id
+export const updateProduct = async (req, res, next) => {
+    const { id } = req.params;
+
+    let product = await Product.findById(id);
+    if (!product) {
+        res.status(400).json({ message: 'No Product found'})
+        return
+    }
+
+    for (let key in req.body) {
+        product[key] = req.body[key]
+    }
+
+    const updatedProduct = await product.save();
+    if (updatedProduct === product) {
+        res.status(200).json(product)
+    } else {
+        res.status(400).json({ message: "Failed to update Product"})
+    }
+
 }
 
 // @desc check out products
