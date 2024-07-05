@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AddProduct } from '../components/AddProduct'
 import ProductListAdmin from '../components/ProductListAdmin'
+import { NavBar } from '../components/NavBar'
 
 
 
@@ -31,6 +32,7 @@ export const ManageProducts = () => {
 
   return (
     <div className="flex flex-col">
+        <NavBar/>
         <AddProduct getProductList={getProductList}/>
         <ProductListAdmin productList={productList}/>
     </div>
