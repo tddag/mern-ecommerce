@@ -9,11 +9,12 @@ export const getProductListService = () => {
                 res = await res.json();
                 resolve(res)
             } else {
-                reject(new Error("Failed to fetch products"))
+                throw new Error("Failed to fetch products")
             }
     
         } catch (e) {
-            reject(new Error("Failed to fetch products"))
+            console.log("Failed to get products")
+            reject([])
         }
     })
 

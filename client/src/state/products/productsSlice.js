@@ -1,36 +1,37 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getProductListService } from '../../services/productServices'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getProductListService } from '../../services/products'
 
 const initialState = {
     productList: [],
-    filteredProductList: []
+    searchBarFilter: {
+        name: null
+    }
 }
 
 const productsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-        getProductList: async (state) => {
-            try {
-                getProductListService()
-                    .then(res => {
-                        console.log("TD Products")
-                        console.log(res);                           
-                        state.productList = res;
-                     
-                    })
-
-                // state.productList = products;
-                // state.filteredProductList = state.productList 
-            } catch (e) {
-                console.log(e)
-            }
-        },
-        filterList: (state, action) => {
-            state.filteredProductList = []
+        updateSearchBarFilter: (state, action) => {
+            state.searchBarFilter = action.payload
         }
+    }, 
+    extraReducers: (builder) => {
+        builder
+            .addCase(getProductListAsync.fulfilled, (state, action) => {
+                state.productList = action.payload;
+            })
     }
 })
 
-export const { getProductList } = productsSlice.actions;
+export const getProductListAsync = createAsyncThunk(
+    "products/getProductListAsync",
+    async () => {
+        return await getProductListService();
+    }
+)
+
+
+
+export const { updateSearchBarFilter } = productsSlice.actions;
 export default productsSlice.reducer;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Select } from 'antd';
+import { useSelector } from 'react-redux';
 
 export const Filter = (props) => {
 
@@ -8,6 +9,9 @@ export const Filter = (props) => {
     const [categoryList, setCategoryList] = useState([])
     const [sizeList, setSizeList] = useState([])
     const [colorList, setColorList] = useState([])
+
+    const { searchBarFilter } = useSelector((state) => state.products)
+
 
 
     useEffect(() => {
@@ -18,9 +22,13 @@ export const Filter = (props) => {
         populateColorList()
     }, [props.productList])
 
+    useEffect(() => {
+        handleFilterChange("name", searchBarFilter.name)
+    }, [searchBarFilter])
+
     const populateCategoryList = () => {
         if (!props.productList) return 
-        let list = props.productList.map(product => product.category)
+        let list = props.productList.map(product => product.category).filter(category => category)
         let set = new Set(list);
         list = Array.from(set);
         list = list.map(category => ({
@@ -32,7 +40,7 @@ export const Filter = (props) => {
 
     const populateSizeList = () => {
         if (!props.productList) return 
-        let list = props.productList.map(product => product.size)
+        let list = props.productList.map(product => product.size).filter(size => size)
         let set = new Set(list);
         list = Array.from(set);
         list = list.map(size => ({
@@ -44,7 +52,7 @@ export const Filter = (props) => {
 
     const populateColorList = () => {
         if (!props.productList) return 
-        let list = props.productList.map(product => product.color)
+        let list = props.productList.map(product => product.color).filter(color => color)
         let set = new Set(list);
         list = Array.from(set);
         list = list.map(color => ({
@@ -64,7 +72,10 @@ export const Filter = (props) => {
                 break;      
             case "color": 
                 setFilter(f => ({...f, color: value}))
-                break;     
+                break;    
+            case "name": 
+                setFilter(f => ({...f, name: value}))
+                break;                     
             default:                       
         }
     }
@@ -76,6 +87,7 @@ export const Filter = (props) => {
                 <Select
                     className="w-20"
                     options={categoryList}
+                    value={props.filter.category}
                     onChange={(value) => handleFilterChange('category', value)}
                 />
             </div>
@@ -85,6 +97,7 @@ export const Filter = (props) => {
                 <Select
                     className="w-20"
                     options={sizeList}
+                    value={props.filter.size}
                     onChange={(value) => handleFilterChange('size', value)}
 
                 />                        
@@ -95,6 +108,7 @@ export const Filter = (props) => {
                 <Select
                     className="w-20"
                     options={colorList}
+                    value={props.filter.color}
                     onChange={(value) => handleFilterChange('color', value)}
                 />                               
             </div>              
