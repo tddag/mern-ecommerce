@@ -59,10 +59,10 @@ export const Home = () => {
     }
 
     return (
-        <div className="flex flex-col bg-blue-200">
+        <div className="flex flex-col ">
             <NavBar searchEnabled={true}/>
-            <div className="bg-red-200 h-full flex w-full">
-                <div className="h-full bg-yellow-200 w-1/3 md:w-1/6 flex flex-col p-4 gap-4">
+            <div className=" h-full flex w-full">
+                <div className="h-full  w-1/3 md:w-1/6 flex flex-col p-4 gap-4">
                     <Filter productList={productList} setFilter={setFilter} filter={filter}/>                      
                 </div>
                 <div className="flex pt-10 pl-5">

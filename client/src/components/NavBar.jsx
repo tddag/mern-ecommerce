@@ -29,8 +29,8 @@ export const NavBar = (props) => {
     }    
 
     return (
-        <div className="bg-red-200 flex justify-between p-2 pr-4 items-center">
-            <span className="cursor-pointer" onClick={() => navigate('/')}>TD Store</span>
+        <div className=" flex justify-between p-2 pr-4 items-center">
+            <span className="cursor-pointer font-bold" onClick={() => navigate('/')}>TD Store</span>
             {props.searchEnabled && 
                 <div className="w-3/5 flex gap-4 items-center">
                     <AutoComplete

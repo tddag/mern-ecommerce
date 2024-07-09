@@ -117,16 +117,16 @@ export const SingleProduct = () => {
             {contextHolder}
             <NavBar/>
 
-            <div className="bg-blue-200 h-full flex flex-col md:flex-row">
-                <div className="bg-purple-200 h-full w-full md:w-1/2 flex flex-col" >
-                    <div className="bg-blue-200 h-60 w-60 m-auto mt-5">
+            <div className=" h-full flex flex-col md:flex-row border-b-2">
+                <div className=" h-full w-full md:w-1/2 flex flex-col" >
+                    <div className=" h-60 w-60 m-auto mt-5">
                         {product. images && (
                             <img src={product?.images[0]} alt="product big image"/>
                         )}
                     </div>
  
                     {product.images?.length > 0 && (
-                        <div className="flex gap-4 h-32 px-8 py-4 overflow-x-auto bg-yellow-100">
+                        <div className="flex gap-4 h-32 px-8 py-4 overflow-x-auto ">
                             {product.images.map((productImage, id) => (
                                     <img  className="h-20 w-20" src={productImage} alt="product small image" key={id}/>
    
@@ -136,7 +136,7 @@ export const SingleProduct = () => {
 
                 </div>
 
-                <div className="bg-orange-200 h-full w-full md:w-1/2 p-10 flex flex-col">
+                <div className=" h-full w-full md:w-1/2 p-10 flex flex-col">
                     <h2>{product.name}</h2>
                     <h2>${product.price}</h2>
                     <h2>{product.size}</h2>
@@ -145,14 +145,14 @@ export const SingleProduct = () => {
                     <button className="bg-blue-200 p-2 rounded-lg mt-20" onClick={handleAddAction}>Add to Cart</button>
                 </div>
             </div>
-            <div className="bg-green-200 h-60 flex flex-col">
-                <div className="ml-5 mt-2">
+            <div className=" h-60 flex flex-col">
+                <div className="ml-5 mt-2 font-bold">
                     <h2>Related Items</h2>
                 </div>
                 {relatedProducts.length > 0 && (
                     <div className="flex flex-wrap justify-center md:justify-start">
                         {relatedProducts.map((otherProduct, id) => (
-                            <div className="h-40 w-40 bg-red-100 m-5" key={id}>
+                            <div className="h-40 w-40  m-5" key={id}>
                                 <div className="ml-2 mt-2">
                                     <div className="h-20 w-20 bg-blue-300 cursor-pointer" onClick={() => navigate(`/product/${otherProduct._id}`)}>
                                         <img src={otherProduct.images[0]} alt="relatedImage"/>

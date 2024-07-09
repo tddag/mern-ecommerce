@@ -87,7 +87,7 @@ const ProductListAdmin = (props) => {
     }
 
     return (
-        <div className="bg-green-100 w-11/12 md:w-3/4 m-auto mt-20 p-4">
+        <div className="w-11/12 md:w-3/4 m-auto mt-20 p-4">
             { contextHolder }
             {productList.length > 0 ? (
                 <div className="flex flex-col gap-6 ">

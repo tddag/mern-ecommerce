@@ -28,8 +28,8 @@ export const ProductItemUser = (props) => {
     return (
     <div>
         {contextHolder}
-        <div className="w-60 h-60 bg-blue-300 p-4 flex flex-col relative border-box">
-            <div className="cursor-pointer overflow-auto h-5" onClick={() => navigateToProduct(props.product._id)}>{props.product.name}</div>
+        <div className="w-60 h-60  rounded-lg p-4 flex flex-col relative border-box border-b-2">
+            <div className="cursor-pointer h-5" onClick={() => navigateToProduct(props.product._id)}>{props.product.name}</div>
             {props.product.images && (
                 <div className="cursor-pointer" onClick={() => navigateToProduct(props.product._id)}>
                     <img src={props.product.images[0]} className="w-20 h-20"/>

@@ -93,13 +93,13 @@ export const Checkout = () => {
   
             ) : (
                 <div className="flex">
-                <div className="bg-blue-200 w-1/2 h-screen">
+                <div className=" w-1/2 h-screen border-r-2">
                     {cart.length > 0 && (
                         <div className="p-6 w-full h-full box-border flex flex-col gap-4 overflow-auto">
                             {cart.map((product, id) => (
-                                <div key={id}  className=" bg-purple-200 p-4 flex flex-col">
+                                <div key={id}  className="  p-4 flex flex-col">
                                     <div className="flex">
-                                        <div>
+                                        <div className="flex flex-col">
                                             <div>
                                                 {product.name}
                                             </div>
@@ -109,8 +109,8 @@ export const Checkout = () => {
 
                                             </div>
 
-                                            <div className="flex gap-2">
-                                                Qty: <InputNumber value={product.qty} min={1} max={10} onChange={(value) => dispatch(updateCartItem({_id: product._id, qty: value}))}/>
+                                            <div className="md:flex gap-2">
+                                                Qty: <InputNumber className="w-10" value={product.qty} min={1} max={10} onChange={(value) => dispatch(updateCartItem({_id: product._id, qty: value}))}/>
                                             </div> 
 
                                             <div>
@@ -135,7 +135,7 @@ export const Checkout = () => {
                     )}
                 </div>
 
-                <div className="bg-green-200 w-1/2 h-screen">
+                <div className=" w-1/2 h-screen">
                     <div className="flex flex-col p-4">
                         <button className={"p-2 rounded-lg bg-orange-300 w-full md:w-1/2 mb-5"} disabled={getTotal() == 0} onClick={handleMakePayment}>Make Payment</button>
                         {/* <form action="/api/products/checkout" method="POST">

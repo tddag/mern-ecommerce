@@ -81,8 +81,8 @@ export const Filter = (props) => {
     }
     
     return (
-        <div>
-            <div className="bg-pink-100 p-4 flex flex-col gap-2">
+        <div className="border-r-2">
+            <div className=" p-4 flex flex-col gap-2">
                 Category
                 <Select
                     className="w-20"
@@ -92,7 +92,7 @@ export const Filter = (props) => {
                 />
             </div>
 
-            <div className="bg-pink-100 p-4 flex flex-col gap-2">
+            <div className="p-4 flex flex-col gap-2">
                 Size
                 <Select
                     className="w-20"
@@ -103,7 +103,7 @@ export const Filter = (props) => {
                 />                        
             </div>
 
-            <div className="bg-pink-100 p-4 flex flex-col gap-2">
+            <div className=" p-4 flex flex-col gap-2">
                 Color
                 <Select
                     className="w-20"

@@ -82,7 +82,10 @@ export const AddProduct = (props) => {
     return (
         <div className="w-11/12 md:w-2/4 mx-auto mt-10" >
             { contextHolder }
-            <form onSubmit={handleFormSubmit} className="p-4 shadow-md rounded-md bg-blue-200">
+            <div className="flex justify-center text-xl font-bold">
+                Add New Product
+            </div>
+            <form onSubmit={handleFormSubmit} className="p-4 shadow-md rounded-md ">
                 <div className="flex items-center p-4">
                     <label htmlFor="name" className="text-grey-700 font-bold mr-10">Name:  </label>                        
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleFormDataChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
