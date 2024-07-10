@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { AutoComplete, Button } from 'antd';
@@ -10,9 +10,26 @@ export const NavBar = (props) => {
     const navigate = useNavigate();
     const cart = useSelector(state => state.cart.products)
     const dispatch = useDispatch();
-    let defaultProducts = [{"value":"Tshirt"},{"value":"Pant"},{"value":"Hat"},{"value":"Bomber"},{"value":"Vans Shoe Old School"},{"value":"Shirt"},{"value":"Suite"},{"value":"PC Gaming CYBERPOWERPC"},{"value":"PS5"},{"value":"Gaming Chair Secret Lab"},{"value":"MacBook Pro - Apple M3 Pro chip with 12‑core CPU, 18‑core GPU and 16‑core Neural Engine"}]
+
+    const [optionList, setOptionList] = useState([])
+
+    const { productList } = useSelector(state => state.products)
+
+    useEffect(() => {
+        if (productList.length > 0) {
+            let newOptionList = []
+            productList.map(product => {
+                newOptionList.push({
+                    value: product.name
+                })
+            })
+            setOptionList(newOptionList)
+
+        }
+    }, [productList])
+
     const [options, setOptions] = useState([])
-    const getPanelValue = (searchText) => !searchText ? [] : defaultProducts.filter(prod => prod.value.toLowerCase().includes(searchText.toLowerCase()))
+    const getPanelValue = (searchText) => !searchText ? [] : optionList.filter(prod => prod.value.toLowerCase().includes(searchText.toLowerCase()))
 
     const handleSearchBarSelect = (value) => {
         dispatch(updateSearchBarFilter({
@@ -20,7 +37,7 @@ export const NavBar = (props) => {
         }))
     }
 
-    const handleSeachBarChange = (value) => {
+    const handleSearchBarChange = (value) => {
         if (!value) {
             dispatch(updateSearchBarFilter({
                 name: null
@@ -41,7 +58,7 @@ export const NavBar = (props) => {
                         }}
                         onSearch={(text) => setOptions(getPanelValue(text))}
                         onSelect={handleSearchBarSelect}
-                        onChange={handleSeachBarChange}
+                        onChange={handleSearchBarChange}
                         placeholder="Search Product"
                     /> 
                     <Button type="primary" shape="circle" icon={<SearchOutlined/>}/>
