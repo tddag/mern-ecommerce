@@ -1,4 +1,17 @@
-# Setup
+<a name="top"/>
+
+# Table of contents
+
+- [Local Setup](#localSetup)
+- [Docker Local](#dockerLocal)
+
+
+
+<a name="localSetup"/>
+
+# Local Setup
+
+### Setup
 
 - Install [Node](https://nodejs.org/en/download/)
 - Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
@@ -93,7 +106,7 @@
     </table>
 - Run the app `npm run start`
 
-# Functionalities
+### Functionalities
 
 - Product Listing
   - <table>
@@ -140,7 +153,7 @@
         </tr>
     </table>
 
-# Technologies/Libraries:
+### Technologies/Libraries:
 
 - ExpressJS: BackEnd server
 - ReactJS: Web App
@@ -148,3 +161,35 @@
 - MongoDB: Database
 - Firebase Storage: File Storage
 - Stripe: Payment API
+
+<a name="dockerLocal"/>
+
+# Docker Local
+
+### Server
+- create Dockerfile for server
+- create server image
+    - `cd server`
+    - `docker build -t ecommerce-server:1.0 .`
+- run server:
+    - `cd server`
+    - `docker run --env-file .env -d -p 8000:8000 ecommerce-server:1.0`
+    - or `docker run -e MONGODBURL=<MONGODBURL> -e JWT_PRIVATE_KEY=<JWT_PRIVATE_KEY> -e STRIPE_SECRET_KEY=<STRIPE_SECRET_KEY> -e FRONT_END_URL=<FRONT_END_URL> -d -p 8000:8000 ecommerce-server:1.0`
+
+### Client
+- create Dockerfile for client
+- add .dockerignore file
+- create client image
+    - `cd client`
+    - `docker build -t ecommerce-client:1.0 .`
+- run client:
+    - `cd client`
+    - `docker run --env-file .env -d -p 5173:5173 ecommerce-client:1.0`
+    - or `docker run -e VITE_FIREBASE_APIKEY=<VITE_FIREBASE_APIKEY> -e .... -d -p 5173:5173 ecommerce-client:1.0`
+- check if Nginx is running:
+    - `docker exec -it e6a3621c66fc nginx -t`
+
+### Test
+ - GET `http://127.0.0.1:8000/api/products`
+ - GET `http://localhost:5173/`
+
