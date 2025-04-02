@@ -202,7 +202,7 @@
 # AWS
 
 ### Diagram
-    - 
+ - Diagram
         <table>
             <tr>
                 <td><img src="./screenshots/eCommerceDiagram.png" alt="eCommerceDiagram"/></td>
